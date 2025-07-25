@@ -1,24 +1,21 @@
 version: 0.2
+
 phases:
-  pre_build:
+  install:
     commands:
-      - echo "=== Environment Info ==="
-      - node --version
-      - npm --version
-      - pwd
-      - echo "=== Source Directory Contents ==="
-      - ls -la
-      - echo "=== Looking for index.html ==="
-      - find . -name "index.html" -type f
-      - echo "=== Public Directory Contents ==="
-      - ls -la public/ || echo "Public directory not found"
-      - echo "=== Package.json build script ==="
-      - cat package.json | grep -A 5 -B 5 '"build"'
+      # No 'cd' command needed here, as the React application is
+      # directly in the root of the GitHub repository.
+      - echo "Installing Node.js dependencies..."
+      - npm install
+
   build:
     commands:
-      - npm install
+      - echo "Building the React application..."
       - npm run build
-  post_build:
-    commands:
-      - echo "=== Build Output ==="
-      - ls -la build/ || ls -la dist/ || echo "No build output directory found"
+
+artifacts:
+  files:
+    - '**/*' # Include all files in the build output
+  # The 'build' folder will be created directly in the root
+  # of the cloned repository by 'npm run build'.
+  base-directory: build
