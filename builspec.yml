@@ -5,15 +5,17 @@ phases:
     runtime-versions:
       nodejs: 20
     commands:
+      - cd src
       - npm install
   build:
     commands:
+      - cd src
       - npm run build
-      - cp appspec.yml dist/
+      - cp ../appspec.yml dist/
       - mkdir -p dist/scripts
-      - cp scripts/install.sh dist/scripts/
+      - cp ../scripts/install.sh dist/scripts/
 
 artifacts:
   files:
     - '**/*'
-  base-directory: dist
+  base-directory: src/dist
