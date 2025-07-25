@@ -1,21 +1,24 @@
 version: 0.2
-
 phases:
-  install:
-    runtime-versions:
-      nodejs: 20
+  pre_build:
     commands:
-      - cd src
-      - npm install
+      - echo "=== Environment Info ==="
+      - node --version
+      - npm --version
+      - pwd
+      - echo "=== Source Directory Contents ==="
+      - ls -la
+      - echo "=== Looking for index.html ==="
+      - find . -name "index.html" -type f
+      - echo "=== Public Directory Contents ==="
+      - ls -la public/ || echo "Public directory not found"
+      - echo "=== Package.json build script ==="
+      - cat package.json | grep -A 5 -B 5 '"build"'
   build:
     commands:
-      - cd src
+      - npm install
       - npm run build
-      - cp ../appspec.yml dist/
-      - mkdir -p dist/scripts
-      - cp ../scripts/install.sh dist/scripts/
-
-artifacts:
-  files:
-    - '**/*'
-  base-directory: src/dist
+  post_build:
+    commands:
+      - echo "=== Build Output ==="
+      - ls -la build/ || ls -la dist/ || echo "No build output directory found"
