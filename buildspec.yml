@@ -10,8 +10,11 @@ phases:
 
   build:
     commands:
-      - echo "Building the React application..."
-      - npm run build
+      - echo "Building the React application using npx..."
+      # Changed 'npm run build' to 'npx react-scripts build'
+      # 'npx' ensures that 'react-scripts' is found and executed,
+      # even if it's only installed locally in node_modules.
+      - npx react-scripts build
 
 artifacts:
   files:
