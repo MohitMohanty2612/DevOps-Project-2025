@@ -6,23 +6,10 @@ phases:
       # No 'cd' command needed here, as the React application is
       # directly in the root of the GitHub repository.
 
+      # The 'ls -R' command is kept for initial debugging if needed,
+      # but can be removed once the build is successful.
       - echo "Listing repository contents for debugging (for reference):"
-      - ls -R # This command lists all files and directories recursively
-
-      # --- Node.js Installation for CodeBuild (using nvm, common in standard images) ---
-      # Ensure nvm is sourced to make 'nvm' commands available.
-      # CodeBuild's standard images typically have nvm pre-installed.
-      # The default NVM_DIR in CodeBuild is often /root/.nvm
-      - export NVM_DIR="/root/.nvm"
-      # Source nvm.sh to load nvm functions. '|| true' prevents build failure if nvm.sh isn't found immediately.
-      - . "$NVM_DIR/nvm.sh" || true
-
-      - echo "Installing Node.js 20 using nvm..."
-      - nvm install 20 # Install Node.js 20
-      - nvm use 20     # Use Node.js 20 for the current session
-
-      - node -v # Verify Node.js version
-      - npm -v # Verify npm version
+      - ls -R
 
       - echo "Installing Node.js dependencies..."
       - npm install
@@ -30,7 +17,7 @@ phases:
   build:
     commands:
       - echo "Building the React application using npx vite build..."
-      # CORRECTED: Using 'npx vite build' for Vite-based React projects.
+      # Using 'npx vite build' for Vite-based React projects.
       # This command will build your application and place the output
       # into the 'dist' directory by default.
       - npx vite build
@@ -38,5 +25,5 @@ phases:
 artifacts:
   files:
     - '**/*' # Include all files in the build output
-  # CORRECTED: Vite typically outputs compiled assets to the 'dist' directory.
+  # Vite typically outputs compiled assets to the 'dist' directory.
   base-directory: dist
