@@ -2,28 +2,20 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      nodejs: 20
     commands:
-      # No 'cd' command needed here, as the React application is
-      # directly in the root of the GitHub repository.
-
-      # The 'ls -R' command is kept for initial debugging if needed,
-      # but can be removed once the build is successful.
-      - echo "Listing repository contents for debugging (for reference):"
-      - ls -R
-
-      - echo "Installing Node.js dependencies..."
+      - echo "Installing dependencies..."
       - npm install
-
   build:
     commands:
-      - echo "Building the React application using npx vite build..."
-      # Using 'npx vite build' for Vite-based React projects.
-      # This command will build your application and place the output
-      # into the 'dist' directory by default.
-      - npx vite build
+      - echo "Running Vite build..."
+      - npm run build
+      - cp appspec.yml dist/
+      - mkdir -p dist/scripts
+      - cp scripts/install.sh dist/scripts/
 
 artifacts:
   files:
-    - '**/*' # Include all files in the build output
-  # Vite typically outputs compiled assets to the 'dist' directory.
+    - '**/*'
   base-directory: dist
