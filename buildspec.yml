@@ -5,8 +5,17 @@ phases:
     commands:
       # No 'cd' command needed here, as the React application is
       # directly in the root of the GitHub repository.
+
       - echo "Listing repository contents for debugging (for reference):"
       - ls -R # This command lists all files and directories recursively
+
+      # Install a specific Node.js version to ensure compatibility with Vite
+      # Using Node.js 20 (LTS) which is generally stable and compatible
+      - curl -fsSL https://deb.nodesource.com/setup_20.x | bash - # For Debian/Ubuntu based images
+      - apt-get install -y nodejs # Install Node.js
+      - node -v # Verify Node.js version
+      - npm -v # Verify npm version
+
       - echo "Installing Node.js dependencies..."
       - npm install
 
