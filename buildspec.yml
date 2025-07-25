@@ -5,22 +5,21 @@ phases:
     commands:
       # No 'cd' command needed here, as the React application is
       # directly in the root of the GitHub repository.
-      - echo "Listing repository contents for debugging..."
-      - ls -R # This command will list all files and directories recursively
+      - echo "Listing repository contents for debugging (for reference):"
+      - ls -R # This command lists all files and directories recursively
       - echo "Installing Node.js dependencies..."
       - npm install
 
   build:
     commands:
-      - echo "Building the React application using npx..."
-      # Changed 'npm run build' to 'npx react-scripts build'
-      # 'npx' ensures that 'react-scripts' is found and executed,
-      # even if it's only installed locally in node_modules.
-      - npx react-scripts build
+      - echo "Building the React application using npx vite build..."
+      # CORRECTED: Using 'npx vite build' for Vite-based React projects.
+      # This command will build your application and place the output
+      # into the 'dist' directory by default.
+      - npx vite build
 
 artifacts:
   files:
     - '**/*' # Include all files in the build output
-  # The 'build' folder will be created directly in the root
-  # of the cloned repository by 'npm run build'.
-  base-directory: build
+  # CORRECTED: Vite typically outputs compiled assets to the 'dist' directory.
+  base-directory: dist
