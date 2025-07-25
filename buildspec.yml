@@ -9,26 +9,17 @@ phases:
       - echo "Listing repository contents for debugging (for reference):"
       - ls -R # This command lists all files and directories recursively
 
-      # --- Node.js Installation for CodeBuild (more robust) ---
-      # Check if nvm is available, otherwise download and install Node.js directly.
-      # CodeBuild images often have nvm pre-installed.
-      - |
-        if command -v nvm &> /dev/null; then
-          echo "nvm found. Installing Node.js 20..."
-          nvm install 20
-          nvm use 20
-        else
-          echo "nvm not found. Attempting direct Node.js 20 installation for Amazon Linux..."
-          # For Amazon Linux 2 or similar, use yum or direct tarball download
-          # This assumes a yum-based system, common in CodeBuild default images
-          yum install -y nodejs npm --enablerepo=epel || true # Try installing via yum, ignore if already installed or not yum-based
-          # If yum fails, try direct download (more universal but complex)
-          # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-          # export NVM_DIR="$HOME/.nvm"
-          # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          # nvm install 20
-          # nvm use 20
-        fi
+      # --- Node.js Installation for CodeBuild (using nvm, common in standard images) ---
+      # Ensure nvm is sourced to make 'nvm' commands available.
+      # CodeBuild's standard images typically have nvm pre-installed.
+      # The default NVM_DIR in CodeBuild is often /root/.nvm
+      - export NVM_DIR="/root/.nvm"
+      # Source nvm.sh to load nvm functions. '|| true' prevents build failure if nvm.sh isn't found immediately.
+      - . "$NVM_DIR/nvm.sh" || true
+
+      - echo "Installing Node.js 20 using nvm..."
+      - nvm install 20 # Install Node.js 20
+      - nvm use 20     # Use Node.js 20 for the current session
 
       - node -v # Verify Node.js version
       - npm -v # Verify npm version
