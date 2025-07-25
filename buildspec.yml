@@ -9,10 +9,27 @@ phases:
       - echo "Listing repository contents for debugging (for reference):"
       - ls -R # This command lists all files and directories recursively
 
-      # Install a specific Node.js version to ensure compatibility with Vite
-      # Using Node.js 20 (LTS) which is generally stable and compatible
-      - curl -fsSL https://deb.nodesource.com/setup_20.x | bash - # For Debian/Ubuntu based images
-      - apt-get install -y nodejs # Install Node.js
+      # --- Node.js Installation for CodeBuild (more robust) ---
+      # Check if nvm is available, otherwise download and install Node.js directly.
+      # CodeBuild images often have nvm pre-installed.
+      - |
+        if command -v nvm &> /dev/null; then
+          echo "nvm found. Installing Node.js 20..."
+          nvm install 20
+          nvm use 20
+        else
+          echo "nvm not found. Attempting direct Node.js 20 installation for Amazon Linux..."
+          # For Amazon Linux 2 or similar, use yum or direct tarball download
+          # This assumes a yum-based system, common in CodeBuild default images
+          yum install -y nodejs npm --enablerepo=epel || true # Try installing via yum, ignore if already installed or not yum-based
+          # If yum fails, try direct download (more universal but complex)
+          # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+          # export NVM_DIR="$HOME/.nvm"
+          # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          # nvm install 20
+          # nvm use 20
+        fi
+
       - node -v # Verify Node.js version
       - npm -v # Verify npm version
 
