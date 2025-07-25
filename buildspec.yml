@@ -5,6 +5,8 @@ phases:
     commands:
       # No 'cd' command needed here, as the React application is
       # directly in the root of the GitHub repository.
+      - echo "Listing repository contents for debugging..."
+      - ls -R # This command will list all files and directories recursively
       - echo "Installing Node.js dependencies..."
       - npm install
 
