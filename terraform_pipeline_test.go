@@ -11,7 +11,7 @@ func TestTerraformPipeline(t *testing.T) {
   t.Parallel()
 
   tf := &terraform.Options{
-    TerraformDir: "../terraform", // Adjust path as per your directory
+    TerraformDir: ".", // Adjust path as per your directory
   }
 
   defer terraform.Destroy(t, tf)             // Cleanup resources after test
