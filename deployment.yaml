@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: myapp
-          image: your-dockerhub-username/myapp:latest # Replace with your image name
+          image: myapp:latest # Replace with your image name
           ports:
             - containerPort: 3000
           env:
